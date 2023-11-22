@@ -2,6 +2,11 @@ from typing import Any
 
 
 def generate_smorest_api_docs_config() -> dict[str, str]:
+    """Generate the flask smorest config for api documentation.
+
+    Returns:
+        dict[str, str]: Smorest api documentation config dictionary.
+    """
     return {
         "API_TITLE": "My API",
         "API_VERSION": "v1",
@@ -18,6 +23,11 @@ def generate_smorest_api_docs_config() -> dict[str, str]:
 
 
 def generate_flask_sqlalchemy_config() -> dict[str, Any]:
+    """Generate the flask sqlalchemy config.
+
+    Returns:
+        dict[str, Any]: Flask-SQLAlchemy config dictionary.
+    """
     return {
         "SQLALCHEMY_DATABASE_URI": "postgresql+psycopg2://postgres:postgres@localhost:5432/postgres",
         "SQLALCHEMY_ENGINE_OPTIONS": {"pool_pre_ping": True},
@@ -26,6 +36,11 @@ def generate_flask_sqlalchemy_config() -> dict[str, Any]:
 
 
 def generate_flask_security_config() -> dict[str, Any]:
+    """Generate the flask security config.
+
+    Returns:
+        dict[str, Any]: Flask-Security-Too config dictionary.
+    """
     return {
         "REMEMBER_COOKIE_SAMESITE": "strict",
         "SECRET_KEY": "7fFksx3hW-RJBnp954PG3qAHTJ2gJzKbi9B6XpGQTfE",
@@ -36,6 +51,11 @@ def generate_flask_security_config() -> dict[str, Any]:
 
 
 def generate_app_config() -> dict[str, Any]:
+    """Generate the flask app config.
+
+    Returns:
+        dict[str, Any]: Flask app configuration dictionary.
+    """
     return {
         "DEBUG": True,
         **generate_flask_security_config(),
