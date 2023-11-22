@@ -31,9 +31,16 @@ Source = "https://github.com/FeryET/flask-ad-service"
 path = "src/flask_ad_service/__about__.py"
 
 [tool.hatch.envs.default]
-dependencies = ["coverage[toml]>=6.5", "pytest", "pytest-mock", "pytest-cov"]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+  "pytest-mock",
+  "pytest-cov",
+  "faker",
+  "factory_boy>=3.3.0",
+]
 [tool.hatch.envs.default.scripts]
-test = "pytest {args:tests}"
+test = "pytest {args:tests} -c pyproject.toml"
 test-cov = "coverage run -m pytest {args:tests}"
 cov-report = ["- coverage combine", "coverage report"]
 cov = ["test-cov", "cov-report"]
@@ -128,3 +135,20 @@ tests = ["tests", "*/pars-tasmim-code-challenge/tests"]
 
 [tool.coverage.report]
 exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+addopts = ["-ra", "--tb=line"]
+norecursedirs = [".vscode", "__pycache__", ".git", ".hatch"]
+# Warnings that should be ignored
+filterwarnings = ["ignore::DeprecationWarning"]
+# custom markers that can be used using pytest.mark
+markers = [
+  "slow: lower-importance tests that take an excessive amount of time",
+  "unit_test",
+  "integration_test",
+  "requires_db",
+]
+# usefixtures = ["app_ctx"]
+pythonpath = ["."]
