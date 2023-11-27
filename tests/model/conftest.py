@@ -5,12 +5,12 @@ from sqlalchemy.orm import Session
 
 from flask_ad_service.model import AdDBModel, CommentDBModel, RoleDBModel, UserDBModel
 
-pytestmark = pytest.mark.usefixtures("app_ctx", "db_test_session")
+pytestmark = pytest.mark.usefixtures("_app_ctx", "db_test_session")
 
 
 @pytest.fixture(scope="module")
 def created_role(
-    app_ctx: None, db_test_session: Session, request: pytest.FixtureRequest
+    _app_ctx: None, db_test_session: Session, request: pytest.FixtureRequest
 ) -> RoleDBModel:
     role = RoleDBModel(name="user", description="user role")  # type: ignore
     db_test_session.add(role)
@@ -20,7 +20,7 @@ def created_role(
 
 @pytest.fixture(scope="module")
 def user_maker(
-    app_ctx: None,
+    _app_ctx: None,
     db_test_session: Session,
     created_role: RoleDBModel,
 ) -> Callable[[int], UserDBModel]:
@@ -40,7 +40,7 @@ def user_maker(
 
 @pytest.fixture(scope="module")
 def ad_maker(
-    app_ctx: None,
+    _app_ctx: None,
     db_test_session: Session,
     request: pytest.FixtureRequest,
 ) -> Callable[[int], AdDBModel]:
@@ -55,7 +55,7 @@ def ad_maker(
 
 @pytest.fixture(scope="module")
 def comment_maker(
-    app_ctx: None, db_test_session: Session, request: pytest.FixtureRequest
+    _app_ctx: None, db_test_session: Session, request: pytest.FixtureRequest
 ) -> Callable[[int, int], CommentDBModel]:
     def maker(author_id: int, ad_id: int) -> CommentDBModel:
         comment = CommentDBModel(

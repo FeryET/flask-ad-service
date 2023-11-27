@@ -12,31 +12,31 @@ from tests.faker.factories import (
     UserFactory,
 )
 
-pytestmark = pytest.mark.usefixtures("app_ctx", "db_test_session")
+pytestmark = pytest.mark.usefixtures("_app_ctx", "db_test_session")
 
 
 @pytest.fixture(scope="module")
-def role(app_ctx: None, db_test_session: Session) -> Generator[RoleDBModel, Any, None]:
-    yield RoleFactory.create()
+def role(_app_ctx: None, db_test_session: Session) -> Generator[RoleDBModel, Any, None]:
+    return RoleFactory.create()
 
 
 @pytest.fixture(scope="module")
 def users(
-    app_ctx: None,
+    _app_ctx: None,
     db_test_session: Session,
     role: RoleDBModel,
 ) -> Generator[list[UserDBModel], Any, None]:
-    yield UserFactory.create_batch(size=2, roles=[role])  # type: ignore
+    return UserFactory.create_batch(size=2, roles=[role])  # type: ignore
 
 
 @pytest.fixture(scope="module")
-def first_user(users: list[UserDBModel]) -> Generator[UserDBModel, Any, None]:
-    yield users[0]
+def first_user(users: list[UserDBModel]) -> UserDBModel:
+    return users[0]
 
 
 @pytest.fixture(scope="module")
-def second_user(users: list[UserDBModel]) -> Generator[UserDBModel, Any, None]:
-    yield users[1]
+def second_user(users: list[UserDBModel]) -> UserDBModel:
+    return users[1]
 
 
 def test_role_factory_generating_roles(

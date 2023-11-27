@@ -44,7 +44,8 @@ def test_comment_db_model_relationship_with_ad_db_model(
     for curr_ad, curr_comment in db_test_session.execute(query).tuples().all():
         assert curr_comment in comments
         if curr_ad.id == curr_comment.ad_id:
-            assert curr_ad.comments is not None and curr_comment in curr_ad.comments
+            assert curr_ad.comments is not None
+            assert curr_comment in curr_ad.comments
         elif curr_ad.comments is not None:
             assert curr_comment not in curr_ad.comments
 
@@ -58,6 +59,7 @@ def test_comment_db_model_relationship_with_user_db_model(
     for curr_user, curr_comment in db_test_session.execute(query).tuples().all():
         assert curr_comment in comments
         if curr_user.id == curr_comment.author_id:
-            assert curr_user.comments is not None and curr_comment in curr_user.comments
+            assert curr_user.comments is not None
+            assert curr_comment in curr_user.comments
         elif curr_user.comments is not None:
             assert curr_comment not in curr_user.comments

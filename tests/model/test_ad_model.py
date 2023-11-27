@@ -51,6 +51,7 @@ def test_ad_db_model_relationship_with_user_pass(
     ):
         assert curr_ad in ads
         if curr_ad.author_id == curr_user.id:
-            assert curr_user.ads is not None and curr_ad in curr_user.ads
+            assert curr_user.ads is not None
+            assert curr_ad in curr_user.ads
         elif curr_user.ads is not None:
             assert curr_ad not in curr_user.ads

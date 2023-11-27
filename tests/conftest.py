@@ -16,14 +16,14 @@ from flask_ad_service.database import db
 
 
 @event.listens_for(Engine, "connect")
-def set_sqlite_pragma(dbapi_connection, connection_record):
+def set_sqlite_pragma(dbapi_connection, connection_record) -> None:
     cursor = dbapi_connection.cursor()
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
 
 
 @pytest.fixture(scope="session")
-def _generate_testing_config():
+def _generate_testing_config() -> Generator[None, Any, None]:
     config = generate_app_config()
     config["TESTING"] = True
     config["WTF_CSRF_ENABLED"] = False
@@ -41,7 +41,7 @@ def _generate_testing_config():
 
 
 @pytest.fixture(scope="session")
-def app(_generate_testing_config) -> Generator["Flask", Any, None]:
+def app(_generate_testing_config: None) -> Flask:
     """
     App for unittesting the package.
     """
@@ -50,17 +50,17 @@ def app(_generate_testing_config) -> Generator["Flask", Any, None]:
 
     app = create_app()
 
-    yield app
+    return app
 
 
 @pytest.fixture(scope="session")
-def app_ctx(app: Flask) -> Generator[None, Any, None]:
+def _app_ctx(app: Flask) -> Generator[None, Any, None]:
     with app.app_context():
         yield
 
 
 @pytest.fixture(scope="session")
-def database(app_ctx: None) -> Generator[SQLAlchemy, Any, None]:
+def database(_app_ctx: None) -> Generator[SQLAlchemy, Any, None]:
     db.create_all()
     yield db
     db.session.rollback()
@@ -69,7 +69,7 @@ def database(app_ctx: None) -> Generator[SQLAlchemy, Any, None]:
 
 @pytest.fixture(scope="module")
 def db_test_session(
-    app_ctx: None,
+    _app_ctx: None,
     database: SQLAlchemy,
 ) -> Generator[Session, Any, None]:
     database.session.rollback()
@@ -85,7 +85,7 @@ def db_test_session(
 
     for item in [AdFactory, RoleFactory, UserFactory, CommentFactory]:
         item._meta.reset_sequence()
-    yield database.session  # type: ignore
+    return database.session  # type: ignore
 
 
 @pytest.fixture(scope="session")
@@ -106,3 +106,18 @@ def faker_session_locale() -> list[str]:
 @pytest.fixture(scope="session", autouse=True)
 def faker_seed() -> Literal[12345]:
     return 12345
+
+
+@pytest.fixture()
+def non_existant_user_id() -> Literal[1000]:
+    return 1_000
+
+
+@pytest.fixture()
+def non_existant_ad_id() -> Literal[10000]:
+    return 10_000
+
+
+@pytest.fixture()
+def non_existant_comment_id() -> Literal[100000]:
+    return 100_000

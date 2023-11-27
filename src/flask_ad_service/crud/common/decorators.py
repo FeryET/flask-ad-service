@@ -51,7 +51,7 @@ def get_result_attribute_by_key(
     attr_key: str,
     _attr_type: "type[CrudFuncResultAttr]",
     /,
-) -> "DecoratedToReturnAttributeOfResultValue[CrudFuncParams, CrudFuncRet, CrudFuncResultAttr, CrudFuncErr]":  # noqa: E501
+) -> "DecoratedToReturnAttributeOfResultValue[CrudFuncResultAttr]":
     def inner(
         func: "FuncReturnsPackedResult[CrudFuncParams, CrudFuncRet, CrudFuncErr]",
     ) -> "FuncReturnsPackedResult[CrudFuncParams, CrudFuncResultAttr, CrudFuncErr]":
@@ -96,7 +96,7 @@ def commit_result_to_db(
 
 def inject_model_by_id(
     model_class: "type[Model]", /
-) -> "DecoratedToInsertIdAsSecondParameterToGetModel[CrudFuncParams, Model, CrudFuncRet, CrudFuncErr]":  # noqa: E501
+) -> "DecoratedToInsertIdAsSecondParameterToGetModel[Model]":
     def inner(
         func: "FuncHasModelAsSecondParameter[CrudFuncParams, Model, CrudFuncRet, CrudFuncErr]",  # noqa: E501
     ) -> "FuncHasIdAsSecondParameter[CrudFuncParams, CrudFuncRet, CrudFuncErr | CrudItemNotFoundError]":  # noqa: E501
